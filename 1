@@ -1,0 +1,35 @@
+version: '3'
+services:
+  wiki:
+    image: mediawiki
+    container_name: wiki
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      #- ./LocalSettings.php:/var/www/html/LocalSettings.php
+      - images:/var/www/html/images
+    networks:
+      - wiki-net
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: wiki
+      MYSQL_PASSWORD: P@ssw0rd
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+    volumes:
+      - dbvolume:/var/lib/mysql
+    networks:
+      - wiki-net
+
+volumes:
+  images:
+  dbvolume:
+
+networks:
+  wiki-net:
+    driver: bridge
