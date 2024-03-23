@@ -1,0 +1,29 @@
+На ControlVM:
+-> sudo apt-get install git -y
+-> git clone https://github.com/auteam-usr/moscow39.git
+После клонирования:
+-> cd moscow39
+-> docker build -t app1 .
+После сборки контейнера проверка:
+-> docker images
+
+Далее необходимо собранный образ из Dockerfile загрузить в свой аккаунт hub.docker.com:
+1) зайти на сайт hub.docker.com;
+2) зайти во вкладку Repositories;
+3) нажать кнопку Create;
+4) задать имя "app1";
+5) нажать Create.
+
+Далее перейти на вкладку Security:
+1) нажать кнопку "New access token";
+2) имя "app1", права доступа "Read, Write, Delete";
+3) нажать Generate и Copy and Close.
+
+Перейти обратно в ControlVM и выполнить команду:
+1) docker login -u %USERNAME%
+2) в качестве пароля необходимо вставить то, что былол сгенерировано;
+3) должно выдаться сообщение "Login Succeeded";
+4) ввести команды:
+   -> docker tag app1 %USERNAME%/app1:1.0
+   -> docker push %USERNAME%/app1:1.0
+5) на сайте hub.docker.com необходимо проверить у образа app1 вкладку Tags.
