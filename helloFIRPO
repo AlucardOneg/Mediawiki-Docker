@@ -1,0 +1,41 @@
+В домашней директории из под пользователя altlinux файл name.txt и записываем в него строку experts:
+-> echo  "experts" > ~/name.txt
+Создать Dockerfile:
+-> mcedit Dockerfile
+Внутри файла написать:
+-> FROM alpine
+-> WORKDIR /hello
+-> COPY name.txt ./
+-> CMD echo "Hello, FIRPO! Greetings from $(cat name.txt)"
+Сохранить и выйти.
+Выполнить:
+-> docker build -t app .
+Проверить:
+-> docker images
+После этого запустить контейнер и вывести содержимое:
+-> docker run --name HelloFIRPO app
+После - удаляем контейнер:
+-> docker rm HelloFIRPO
+Загрузка Dockerfile в локальный DockerRegistry:
+-> docker tag app localhost:5000/app:1.0
+-> docker push localhost:5000/app:1.0
+Проверка:
+-> docker images
+# ...
+# localhost:5000/app ...
+# app ...
+# ...
+И возможность загрузки из DockerRegistry:
+(перед этим нужно удалить localhost и app)
+-> docker rm localhost:5000/app
+-> docker rm app
+Далее:
+-> docker rmi localhost:5000/app:1.0 app
+-> docker pull localhost:5000/app:1.0
+-> docker images
+# ...
+# localhost:5000/app ...
+# ...
+-> docker run --name HelloFIRPO localhost:5000/app:1.0
+Вывод сообщения должен быть выполнен.
+
